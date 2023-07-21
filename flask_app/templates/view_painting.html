@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Painting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <h2>{{painting.title}} by {{painting.user.first_name}} {{painting.user.last_name}}</h2>
+  <div>
+    <h3>Description:</h3>
+    <p>{{painting.description}}</p>
+    <h3>Price:</h3>
+    <p>{{painting.price}}</p>
+    <h3>Number Purchased:</h3>
+    <p>{{painting.number_purchased}}</p>
+    {% if painting.number_purchased < painting.quantity %}
+        <form action="/paintings/buy/{{painting.id}}" method="POST">
+            <input type="submit" value="Buy">
+        </form>
+    {% else %}
+        {% if painting.number_purchased == painting.quantity %}
+            <p>Sold Out</p>
+        {% else %}
+            <p>Back Ordered</p>
+        {% endif %}
+    {% endif %}
+  </div>
+  <a href="/paintings">Back to Paintings</a>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paintings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Welcome, {{ user.first_name }}</h1>    
+    <a href="/paintings/new">Create Painting</a>
+    <form action="/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
+    <div class="ctnLR">
+        <div class="ctn">
+            {% for painting in paintings %}
+                <div class="row">
+                <p>{{painting.title}} by {{painting.user.first_name}} {{painting.user.last_name}}</p>
+                {% if session['user_id'] == painting.user.id %}
+                    <td>
+                        <a href="/paintings/view/{{painting.id}}">View</a>
+                        <a href="/paintings/edit/{{painting.id}}">Edit</a>
+                        <a href="/paintings/delete/{{painting.id}}">Delete</a>
+                    </td>
+                {% else %}
+                    <td>
+                        <a href="/paintings/view/{{painting.id}}">View</a>
+                    </td>
+                {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="ctn">
+            <h2>Owned Paintings</h2>
+            {% for painting in user_paintings %}
+                <div class="row">
+                <p>{{painting.title}} by {{painting.user.first_name}} {{painting.user.last_name}}</p>
+                <a href="/paintings/view/{{painting.id}}">View</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
